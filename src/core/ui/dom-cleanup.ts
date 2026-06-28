@@ -95,6 +95,13 @@ function transformTranscript(): void {
     maskMachinery(col);
   }
 
+  // Self-correct: the card panel is anchored into the latest conversation turn
+  // *after* we may have hidden it as an emptied turn. Re-reveal any element we
+  // previously hid that now hosts the panel, so the panel is never invisible.
+  for (const hidden of document.querySelectorAll<HTMLElement>(`[${HIDDEN_ATTR}]`)) {
+    if (hidden.querySelector(`#${PANEL_ID}`)) hidden.removeAttribute(HIDDEN_ATTR);
+  }
+
   // Hide turns that became empty after masking (continuation/nudge user turns
   // and tool-only assistant turns). Skip the latest column: it hosts the card
   // panel and may be transiently empty mid-stream.
@@ -206,6 +213,7 @@ export function computeMaskRanges(full: string): Array<[number, number]> {
 
 /** Hides the largest empty wrapper around an emptied turn (incl. its avatar). */
 function hideEmptyTurn(column: HTMLElement): void {
+  if (column.querySelector(`#${PANEL_ID}`)) return;
   let target: HTMLElement = column;
   while (
     target.parentElement &&
