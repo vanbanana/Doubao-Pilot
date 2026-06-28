@@ -1,0 +1,36 @@
+{
+  "name": "doubao-pilot",
+  "description": "豆包 Pilot — 让豆包网页版获得浏览器与本机操作能力的浏览器扩展",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "sync-host": "node scripts/sync-host.mjs",
+    "dev": "npm run sync-host && wxt",
+    "build": "npm run sync-host && wxt build",
+    "build:chrome": "npm run sync-host && wxt build --browser chrome",
+    "build:edge": "npm run sync-host && wxt build --browser edge",
+    "zip": "wxt zip",
+    "compile": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint . --ext .ts,.tsx",
+    "postinstall": "wxt prepare"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.287",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "@wxt-dev/module-react": "^1.1.3",
+    "eslint": "^9.17.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "wxt": "^0.19.27"
+  }
+}
