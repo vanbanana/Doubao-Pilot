@@ -12,7 +12,8 @@ export function injectThemeStyles(): void {
   const style = document.createElement('style');
   style.id = THEME_STYLE_ID;
   style.textContent = THEME_CSS;
-  document.head.appendChild(style);
+  // At document_start <head> may not exist yet; <html> always does.
+  (document.head ?? document.documentElement).appendChild(style);
 }
 
 /** Adds `dbp-theme-dark` / `dbp-theme-light` to <html> based on 豆包's background. */
