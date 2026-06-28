@@ -27,11 +27,15 @@ const SEND_BUBBLE_SELECTOR = '[class*="send-msg-bubble"]';
  * injected patterns, so it can never hide genuine user/model content.
  */
 export function startDomCleanup(): void {
-  injectCleanupStyles();
   let queued = false;
+  let styled = false;
   const run = () => {
     queued = false;
     try {
+      if (!styled) {
+        injectCleanupStyles();
+        styled = true;
+      }
       transformTranscript();
     } catch {
       /* never let cosmetic cleanup break the page */
@@ -75,7 +79,8 @@ function injectCleanupStyles(): void {
     .dbp-protocol-chip::before { content: '\\1F6E0'; }
     [${HIDDEN_ATTR}] { display: none !important; }
   `;
-  document.head.appendChild(style);
+  // At document_start <head> may not exist yet; <html> always does.
+  (document.head ?? document.documentElement).appendChild(style);
 }
 
 function transformTranscript(): void {
