@@ -83,9 +83,10 @@ function transformTranscript(): void {
   if (!columns.length) return;
   const lastColumn = columns[columns.length - 1] ?? null;
 
+  // Mask machinery in every turn. The latest assistant turn shares its column
+  // with the card panel, so we must NOT skip panel-hosting columns here — the
+  // TreeWalker (maskMachinery) already excludes the panel's own subtree.
   for (const col of columns) {
-    // Never touch our own card panel.
-    if (col.querySelector(`#${PANEL_ID}`)) continue;
     maskMachinery(col);
   }
 
